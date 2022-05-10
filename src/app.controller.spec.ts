@@ -1,12 +1,7 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { AppController } from './app.controller';
+import { Controller } from '@nestjs/common';
 import { AppService } from './app.service';
 
-describe('AppController', () => {
-  beforeEach(async () => {
-    await Test.createTestingModule({
-      controllers: [AppController],
-      providers: [AppService],
-    }).compile();
-  });
-});
+@Controller()
+export class AppController {
+  constructor(private readonly appService: AppService) {}
+}
