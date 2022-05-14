@@ -1,10 +1,15 @@
 import { CreateStreetDto } from './create-street-dto.interface';
 import { CreateCityDto } from './create-city-dto.interface';
+import { IsInt, IsPositive, ValidateNested } from 'class-validator';
 
-export interface CreateLocationDto {
+export class CreateLocationDto {
+     @ValidateNested()
      city: CreateCityDto;
+
+     @ValidateNested()
      street: CreateStreetDto;
+
+     @IsInt()
+     @IsPositive()
      home: number;
-     cityId?: number;
-     streetId?: number;
-   }
+}

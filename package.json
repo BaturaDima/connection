@@ -26,8 +26,11 @@
     "@nestjs/config": "^2.0.0",
     "@nestjs/core": "^8.0.0",
     "@nestjs/platform-express": "^8.0.0",
+    "@nestjs/mapped-types": "^1.0.1",
     "@prisma/client": "^3.10.0",
     "reflect-metadata": "^0.1.13",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.13.2",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0"
   },
@@ -74,5 +77,5 @@
   },
 },
     "prisma": {
-    "seed": "ts-node src/shared/prisma/seed.ts"
+       "seed": "ts-node ./prisma/seed.ts"
 }

@@ -5,21 +5,9 @@ import { UpdateUserDto } from './model/update-user-dto.interface';
 
 @Injectable()
 export class UserService {
-  constructor(private prismaService: PrismaService) {}
+    constructor(private prismaService: PrismaService) {}
 
-  async createUser(data: CreateUserDto) {
-    // TODO: implement user registration logic
-    const hash = data.password;
-    delete data.password;
-
-    return this.prismaService.user.create({
-      data: { ...data, passwordHash: hash },
-    });
-  }
-
-  async getUsers() {
-    return this.prismaService.user.findMany({
-      select: {
+    private userInfo = {
         id: true,
         firstName: true,
         lastName: true,
@@ -27,47 +15,62 @@ export class UserService {
         createdAt: true,
         updatedAt: true,
         isActive: true,
-      },
-    });
-  }
+        userRating: true,
+    };
 
-  async getUser(id: number) {
-    return this.prismaService.user.findUnique({
-      where: { id },
-    });
-  }
+    async createUser(data: CreateUserDto) {
+        // TODO: implement user registration logic
+        const hash = data.password;
+        delete data.password;
 
-  async getUserByEmail(email: string) {
-    return this.prismaService.user.findUnique({
-      where: {
-        email: email,
-      },
-    });
-  }
+        return this.prismaService.user.create({
+            data: { ...data, passwordHash: hash },
+        });
+    }
 
-  async updateUser(id: number, data: UpdateUserDto) {
-    return this.prismaService.user.update({
-      select: { id: true },
-      where: { id },
-      data,
-    });
-  }
+    async getUsers() {
+        return this.prismaService.user.findMany({
+            select: this.userInfo,
+        });
+    }
 
-  async blockUser(id: number) {
-    return this.changeUserActivity(id, false);
-  }
+    async getUser(id: number) {
+        return this.prismaService.user.findUnique({
+            select: this.userInfo,
+            where: { id },
+        });
+    }
 
-  async activateUser(id: number) {
-    return this.changeUserActivity(id, true);
-  }
+    async getUserByEmail(email: string) {
+        return this.prismaService.user.findUnique({
+            select: this.userInfo,
+            where: { email },
+        });
+    }
 
-  private changeUserActivity(id: number, isActive: boolean) {
-    return this.prismaService.user.update({
-      select: {
-        id: true,
-      },
-      where: { id },
-      data: { isActive },
-    });
-  }
+    async updateUser(id: number, data: UpdateUserDto) {
+        return this.prismaService.user.update({
+            select: { id: true },
+            where: { id },
+            data,
+        });
+    }
+
+    async blockUser(id: number) {
+        return this.changeUserActivity(id, false);
+    }
+
+    async activateUser(id: number) {
+        return this.changeUserActivity(id, true);
+    }
+
+    private changeUserActivity(id: number, isActive: boolean) {
+        return this.prismaService.user.update({
+            select: {
+                id: true,
+            },
+            where: { id },
+            data: { isActive },
+        });
+    }
 }
